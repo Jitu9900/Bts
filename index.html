@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bridge to Success</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; font-family:'Roboto',sans-serif; }
+html, body { height:100%; background:#EEEEEE; color:#212121; overflow:hidden; }
+.screen { position:fixed; inset:0; display:flex; flex-direction:column; background:#EEEEEE; transition:transform .32s cubic-bezier(.4,0,.2,1); will-change:transform; z-index:1; }
+.screen.off  { transform:translateX(100%); pointer-events:none; }
+.screen.back { transform:translateX(-22%); pointer-events:none; }
+.hdr { display:flex; align-items:center; gap:10px; padding:40px 14px 12px; background:#1565C0; flex-shrink:0; box-shadow:0 2px 8px rgba(0,0,0,.25); position:relative; z-index:10; }
+.hdr-back { width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.hdr-back svg { width:22px; height:22px; fill:none; stroke:#fff; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+.hdr-logo { width:44px; height:44px; border-radius:50%; border:2px solid rgba(255,255,255,.4); overflow:hidden; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:rgba(255,255,255,.1); }
+.hdr-logo span { font-size:13px; font-weight:700; color:#fff; }
+.hdr-title { flex:1; text-align:center; font-size:17px; font-weight:500; color:#fff; }
+.hdr-icons { display:flex; gap:2px; flex-shrink:0; }
+.hdr-icon { width:36px; height:36px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.hdr-icon svg { width:20px; height:20px; fill:none; stroke:#fff; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.banner-placeholder { width:100%; height:120px; background:linear-gradient(135deg,#0d47a1,#1565C0); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.banner-placeholder span { color:#fff; font-size:13px; opacity:.7; }
+.section-title { font-size:18px; font-weight:600; color:#212121; padding:14px 14px 8px; }
+.quick-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; padding:0 14px 14px; flex-shrink:0; }
+.q-item { background:#fff; border-radius:14px; padding:14px 10px; display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.q-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; }
+.q-label { font-size:12px; font-weight:500; color:#424242; text-align:center; line-height:1.3; }
+.qi-blue { background:#E3F2FD; } .qi-green { background:#E8F5E9; } .qi-red { background:#FFEBEE; }
+.qi-orange { background:#FFF3E0; } .qi-purple { background:#EDE7F6; } .qi-teal { background:#E0F2F1; }
+.qi-amber { background:#FFFDE7; } .qi-pink { background:#FCE4EC; }
+.scroll { flex:1; overflow-y:auto; overflow-x:hidden; -webkit-overflow-scrolling:touch; }
+.scroll::-webkit-scrollbar { display:none; }
+.courses-row { display:flex; gap:12px; padding:0 14px 20px; overflow-x:auto; scrollbar-width:none; }
+.courses-row::-webkit-scrollbar { display:none; }
+.mini-course { flex-shrink:0; width:200px; background:#fff; border-radius:14px; overflow:hidden; box-shadow:0 1px 6px rgba(0,0,0,.1); cursor:pointer; }
+.mini-course img { width:100%; height:110px; object-fit:cover; display:block; }
+.mini-course-name { font-size:12px; font-weight:500; padding:8px 10px; color:#333; }
+.course-card { background:#fff; border-radius:16px; margin:0 14px 14px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.1); cursor:pointer; }
+.course-card img { width:100%; height:180px; object-fit:cover; display:block; }
+.course-card-body { padding:12px 14px 14px; }
+.course-card-name { font-size:16px; font-weight:500; color:#212121; margin-bottom:4px; }
+.course-card-expiry { font-size:13px; color:#E65100; margin-bottom:12px; font-weight:500; }
+.course-card-actions { display:flex; align-items:center; gap:10px; }
+.wa-btn { width:40px; height:40px; flex-shrink:0; }
+.btn-details, .btn-content { flex:1; padding:11px; border-radius:10px; color:#fff; font-size:14px; font-weight:500; text-align:center; cursor:pointer; border:none; }
+.btn-details { background:#5C6BC0; } .btn-content { background:#FF9800; font-weight:600; }
+.folder-list { display:flex; flex-direction:column; gap:8px; padding:10px 14px 80px; }
+.folder-item { background:#fff; border-radius:14px; padding:16px; display:flex; align-items:center; gap:14px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.folder-name { flex:1; font-size:15px; color:#212121; }
+.folder-arr { color:#BDBDBD; font-size:20px; }
+.folder-svg { width:48px; height:48px; }
+.content-list { display:flex; flex-direction:column; gap:8px; padding:10px 14px 80px; }
+.content-item { background:#fff; border-radius:14px; padding:13px 14px; display:flex; align-items:center; gap:13px; cursor:pointer; box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.ci-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.ci-video { background:#EDE7F6; } .ci-pdf { background:#FCE4EC; } .ci-test { background:#E8F5E9; }
+.ci-info { flex:1; min-width:0; }
+.ci-name { font-size:14px; color:#212121; margin-bottom:3px; }
+.ci-badge { font-size:11px; font-weight:600; padding:2px 9px; border-radius:20px; display:inline-block; }
+.bv { background:#EDE7F6; color:#673AB7; } .bp { background:#FCE4EC; color:#E91E63; }
+.ftabs { display:flex; gap:8px; padding:10px 14px 4px; overflow-x:auto; scrollbar-width:none; flex-shrink:0; }
+.ftabs::-webkit-scrollbar { display:none; }
+.ftab { flex-shrink:0; padding:7px 18px; border-radius:24px; font-size:13px; font-weight:500; cursor:pointer; background:#fff; border:1.5px solid #DDD; color:#555; }
+.ftab.on { background:#1565C0; border-color:#1565C0; color:#fff; }
+.bnav { display:flex; background:#1565C0; flex-shrink:0; padding-bottom:env(safe-area-inset-bottom,0); }
+.bnav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 4px 8px; cursor:pointer; opacity:.65; }
+.bnav-item.on { opacity:1; }
+.bnav-item svg { width:22px; height:22px; fill:none; stroke:#fff; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.bnav-item span { font-size:10px; color:#fff; font-weight:500; }
+#s-player { background:#000; z-index:50; }
+.player-wrap { display:flex; flex-direction:column; height:100%; }
+.yt-box { width:100%; background:#000; flex-shrink:0; position:relative; height:min(56.25vw, 62vh); }
+#yt-frame { width:100%; height:100%; border:none; display:block; }
+.player-hdr { position:absolute; top:0; left:0; right:0; padding:42px 12px 8px; background:linear-gradient(180deg,rgba(0,0,0,.85) 0%,transparent 100%); display:flex; align-items:flex-start; gap:8px; z-index:10; }
+.player-hdr-title { flex:1; font-size:14px; color:#fff; font-weight:500; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+.ctrl-row { display:flex; align-items:center; gap:8px; padding:10px 14px; background:#111; flex-shrink:0; }
+.ctrl-btn { width:42px; height:42px; border-radius:50%; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); color:#fff; font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.ctrl-sp { flex:1; }
+.speed-pill { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:#90CAF9; font-size:13px; font-weight:700; padding:8px 16px; border-radius:24px; cursor:pointer; }
+.pl-area { flex:1; overflow-y:auto; background:#0A0A0A; }
+.pl-area::-webkit-scrollbar { display:none; }
+.pl-head { display:flex; align-items:center; justify-content:space-between; padding:12px 14px 8px; }
+.pl-label { font-size:14px; font-weight:600; color:#fff; }
+.pl-cnt { font-size:12px; color:#888; background:#1A1A1A; padding:3px 10px; border-radius:20px; }
+.pl-list { padding:0 12px 14px; display:flex; flex-direction:column; gap:8px; }
+.pl-item { background:#181818; border-radius:12px; padding:11px 12px; display:flex; align-items:center; gap:11px; cursor:pointer; border:1.5px solid transparent; }
+.pl-item.now { border-color:#1565C0; background:#0D1B2A; }
+.pl-num { width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,.06); display:flex; align-items:center; justify-content:center; font-size:13px; color:#aaa; flex-shrink:0; }
+.pl-item.now .pl-num { background:#1565C0; color:#fff; }
+.pl-name { flex:1; font-size:13px; color:#ddd; }
+.pl-item.now .pl-name { color:#fff; font-weight:500; }
+#s-pdf { z-index:50; background:#1A1A2E; }
+.pdf-hdr { display:flex; align-items:center; gap:10px; padding:42px 14px 12px; background:#1565C0; flex-shrink:0; }
+.pdf-title-wrap { flex:1; min-width:0; }
+.pdf-title { font-size:15px; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pdf-open-btn { width:36px; height:36px; border-radius:8px; background:rgba(255,255,255,.15); display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; cursor:pointer; }
+.pdf-body { flex:1; position:relative; overflow:hidden; }
+#pdf-frame { width:100%; height:100%; border:none; background:#fff; display:block; }
+.pdf-overlay { position:absolute; inset:0; background:#1A1A2E; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; transition:opacity .3s; }
+.pdf-overlay.gone { opacity:0; pointer-events:none; }
+.spinner-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:180px; gap:14px; }
+.spinner { width:36px; height:36px; border:3px solid rgba(21,101,192,.2); border-top-color:#1565C0; border-radius:50%; animation:spin .8s linear infinite; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.spinner-txt { font-size:13px; color:#757575; }
+.toast { position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(60px); background:#323232; color:#fff; padding:10px 20px; border-radius:24px; font-size:13px; z-index:999; transition:transform .3s; pointer-events:none; }
+.toast.on { transform:translateX(-50%) translateY(0); }
+.empty { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; gap:10px; }
+.empty-icon { font-size:48px; } .empty-txt { font-size:14px; color:#9E9E9E; text-align:center; }
+.notif-dot { width:8px; height:8px; border-radius:50%; background:#FF5252; position:absolute; top:6px; right:6px; }
+</style>
+</head>
+<body>
+
+<div class="screen" id="s-home">
+  <div class="hdr">
+    <div style="display:flex;align-items:center;gap:8px;flex:1">
+      <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:4px 10px;cursor:pointer;display:flex;align-items:center;gap:4px;">
+        <span style="color:#fff;font-size:13px;font-weight:500">My Courses</span>
+      </div>
+    </div>
+    <div class="hdr-logo"><span>BTS</span></div>
+    <div style="position:relative">
+      <svg width="22" height="22" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <div class="notif-dot"></div>
+    </div>
+  </div>
+
+  <div class="scroll" id="home-scroll">
+    <div class="banner-placeholder"><span>🎓 Bridge to Success — Civil Engineering</span></div>
+    <div class="section-title">Quick Access</div>
+    <div class="quick-grid">
+      <div class="q-item" onclick="goScreen('s-courses')"><div class="q-icon qi-blue">🖥️</div><div class="q-label">All Courses</div></div>
+      <div class="q-item" onclick="goScreen('s-courses')"><div class="q-icon qi-purple">💻</div><div class="q-label">My Paid Course</div></div>
+      <div class="q-item" onclick="toast_msg('Live Class jald aayega!')"><div class="q-icon qi-red">🔴</div><div class="q-label">Live Class</div></div>
+      <div class="q-item" onclick="toast_msg('Free videos load ho rahe hain...')"><div class="q-icon qi-blue">▶️</div><div class="q-label">Free Video</div></div>
+      <div class="q-item" onclick="toast_msg('Tests jald aayenge!')"><div class="q-icon qi-green">📋</div><div class="q-label">All Test</div></div>
+      <div class="q-item" onclick="toast_msg('Social links khul rahe hain...')"><div class="q-icon qi-teal">🌐</div><div class="q-label">Social Links</div></div>
+    </div>
+    <div class="section-title">Latest Courses</div>
+    <div id="home-latest" class="courses-row">
+      <div class="spinner-wrap" style="min-height:120px;padding:20px"><div class="spinner"></div></div>
+    </div>
+    <div style="height:80px"></div>
+  </div>
+
+  <div class="bnav">
+    <div class="bnav-item on" onclick="goScreen('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="bnav-item" onclick="goScreen('s-courses')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>My Courses</span></div>
+  </div>
+</div>
+
+<div class="screen off" id="s-courses">
+  <div class="hdr">
+    <div class="hdr-back" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="hdr-title">My Courses</div>
+  </div>
+  <div class="scroll" style="padding-top:12px">
+    <div id="courses-box"><div class="spinner-wrap"><div class="spinner"></div><div class="spinner-txt">Load ho rahi hain...</div></div></div>
+  </div>
+</div>
+
+<div class="screen off" id="s-cats">
+  <div class="hdr">
+    <div class="hdr-back" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="hdr-title">Categories</div>
+  </div>
+  <div class="scroll"><div class="folder-list" id="cats-box"><div class="spinner-wrap"><div class="spinner"></div></div></div></div>
+</div>
+
+<div class="screen off" id="s-units">
+  <div class="hdr">
+    <div class="hdr-back" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="hdr-title">Units</div>
+  </div>
+  <div class="scroll"><div class="folder-list" id="units-box"><div class="spinner-wrap"><div class="spinner"></div></div></div></div>
+</div>
+
+<div class="screen off" id="s-content">
+  <div class="hdr">
+    <div class="hdr-back" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="hdr-title" id="content-hdr-title">Content</div>
+  </div>
+  <div class="ftabs">
+    <div class="ftab on" onclick="setFilt('all',this)">All</div>
+    <div class="ftab" onclick="setFilt('video',this)">🎬 Videos</div>
+    <div class="ftab" onclick="setFilt('pdf',this)">📄 PDFs</div>
+  </div>
+  <div class="scroll" style="padding-top:8px"><div class="content-list" id="content-box"></div></div>
+</div>
+
+<div class="screen off" id="s-player">
+  <div class="player-wrap">
+    <div class="yt-box">
+      <div class="player-hdr">
+        <div class="hdr-back" onclick="closePlayer()" style="background:rgba(0,0,0,.5);border-radius:50%"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+        <div class="player-hdr-title" id="player-vid-title">Video</div>
+      </div>
+      <iframe id="yt-frame" src="about:blank" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+    </div>
+    <div class="ctrl-row">
+      <div class="ctrl-btn" onclick="prevVid()">⏮</div>
+      <div class="ctrl-sp"></div>
+      <div class="speed-pill" id="speed-lbl">1× Speed</div>
+      <div class="ctrl-sp"></div>
+      <div class="ctrl-btn" onclick="nextVid()">⏭</div>
+    </div>
+    <div class="pl-area">
+      <div class="pl-head"><div class="pl-label">Playlist</div><div class="pl-cnt" id="pl-cnt">0 videos</div></div>
+      <div class="pl-list" id="pl-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="screen off" id="s-pdf">
+  <div class="pdf-hdr">
+    <div class="hdr-back" onclick="goBack()"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></div>
+    <div class="pdf-title-wrap"><div class="pdf-title" id="pdf-title-lbl">PDF</div></div>
+    <div class="pdf-open-btn" onclick="openPdfNew()">↗</div>
+  </div>
+  <div class="pdf-body">
+    <div class="pdf-overlay" id="pdf-overlay"><div class="spinner"></div><div class="spinner-txt">PDF load ho raha hai...</div></div>
+    <iframe id="pdf-frame" src="about:blank" onload="onPdfLoad()"></iframe>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = '/api/proxy';
+const IMG_BASE = 'https://bridgetosuccess.learncentre.tech/public/storage/course_thumbnail/';
+const PDF_BASE = 'https://bridgetosuccess.learncentre.tech/public/storage/pdf/';
+
+const S = { course:null, items:[], videos:[], vidIdx:-1, pdfUrl:'', history:['s-home'] };
+
+function goScreen(id) {
+  const cur = S.history[S.history.length-1];
+  if(cur===id) return;
+  document.getElementById(cur).classList.add('back');
+  setTimeout(()=>document.getElementById(cur).classList.add('off'),320);
+  document.getElementById(id).classList.remove('off','back');
+  S.history.push(id);
+}
+function goBack() {
+  if(S.history.length<=1) return;
+  const cur = S.history.pop();
+  const prev = S.history[S.history.length-1];
+  document.getElementById(cur).classList.add('off');
+  document.getElementById(cur).classList.remove('back');
+  document.getElementById(prev).classList.remove('off','back');
+}
+function closePlayer() { document.getElementById('yt-frame').src='about:blank'; goBack(); }
+let _tt;
+function toast_msg(m) {
+  const el = document.getElementById('toast');
+  el.textContent=m; el.classList.add('on');
+  clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('on'),2500);
+}
+
+async function apiCourses() {
+  const r = await fetch(`${API_BASE}?tag=allCourses`);
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+async function apiContent(courseId, categoryId) {
+  const r = await fetch(`${API_BASE}?tag=getCategoryMixed&courseId=${encodeURIComponent(courseId)}&categoryId=${encodeURIComponent(categoryId||'')}`);
+  if(!r.ok) throw new Error('HTTP '+r.status);
+  return r.json();
+}
+
+function folderSVG() {
+  return `<svg class="folder-svg" viewBox="0 0 56 56" fill="none"><rect x="4" y="18" width="48" height="34" rx="4" fill="#FFB300"/><path d="M4 18h22l4-6h22v6H4z" fill="#FFA000"/><rect x="6" y="22" width="44" height="28" rx="3" fill="#FFC107"/></svg>`;
+}
+
+async function loadHome() {
+  try {
+    const res = await apiCourses();
+    const box = document.getElementById('home-latest');
+    if(res.success!==1||!res.courses?.length) { box.innerHTML='<div class="spinner-txt" style="padding:16px">Courses nahi mili</div>'; return; }
+    box.innerHTML = res.courses.slice(0,6).map(c=>`
+      <div class="mini-course" onclick='openCourse(${JSON.stringify(c)})'>
+        ${c.courseImg?`<img src="${IMG_BASE}${c.courseImg}" onerror="this.style.display='none'">`:'<div style="height:110px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;font-size:32px">🎓</div>'}
+        <div class="mini-course-name">${c.courseName}</div>
+      </div>`).join('');
+  } catch(e) { document.getElementById('home-latest').innerHTML=`<div class="spinner-txt" style="padding:16px">Courses load nahi hui</div>`; }
+}
+
+async function loadCourses() {
+  const box = document.getElementById('courses-box');
+  box.innerHTML=`<div class="spinner-wrap"><div class="spinner"></div><div class="spinner-txt">Load ho rahi hain...</div></div>`;
+  try {
+    const res = await apiCourses();
+    if(res.success!==1||!res.courses?.length) throw new Error();
+    box.innerHTML = res.courses.map(c=>`
+      <div class="course-card">
+        ${c.courseImg?`<img s
